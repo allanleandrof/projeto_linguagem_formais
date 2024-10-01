@@ -1,11 +1,11 @@
-#include "Automato.h"
+#include "automato.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-Automato::Automato() {}
+automato::automato() {}
 
-void Automato::carregarAutomato(const string& arquivo) {
+void automato::carregarAutomato(const string& arquivo) {
     ifstream file(arquivo);
     string linha;
 
@@ -46,7 +46,7 @@ void Automato::carregarAutomato(const string& arquivo) {
     }
 }
 
-void Automato::exibir() const {
+void automato::exibir() const {
     cout << "Alfabeto: ";
     for (const auto& simbolo : alfabeto) {
         cout << simbolo << " ";

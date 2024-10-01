@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Automato {
+class automato {
 private:
     vector<string> alfabeto;
     vector<string> estados;
@@ -16,7 +16,7 @@ private:
     vector<tuple<string, string, string>> transicoes; // q0, q1, a
 
 public:
-    Automato();  // Construtor
+    automato();  // Construtor
     void carregarAutomato(const string& arquivo);  // Função para carregar um autômato
     void exibir() const;  // Função para exibir o autômato
 };
