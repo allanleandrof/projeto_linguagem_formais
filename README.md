@@ -1,1 +1,1 @@
-# projeto_linguagem_formais
+# projeto_linguagens_formais
