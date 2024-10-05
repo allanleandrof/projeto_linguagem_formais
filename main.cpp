@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "automato.h"
 #include "expressaoRegular.h"
 
@@ -11,7 +12,6 @@ int main() {
     cout << "Digite o nome do arquivo: ";
     cin >> arquivo;
 
-    // Detecta o tipo de formalismo baseado no conteúdo do arquivo
     ifstream file(arquivo);
     if (!file.is_open()) {
         cerr << "Erro ao abrir o arquivo: " << arquivo << endl;
@@ -19,36 +19,36 @@ int main() {
     }
 
     string linha;
-    bool isAutomato = false;
-    bool isExpressao = false;
+    bool hasTransicoes = false;
+    bool hasExpressao = false;
 
-    // Lê as linhas do arquivo e verifica o tipo de formalismo
+    // Ler todas as linhas do arquivo
     while (getline(file, linha)) {
-        if (linha.find("alfabeto:") == 0) {
-            // Verifica se o arquivo é um AFD/AFN ou uma ER
-            if (linha.find("transicoes") != string::npos) {
-                isAutomato = true;
-            } else if (linha.find("expressao:") != string::npos) {
-                isExpressao = true;
-            }
-            break; // Pare de ler após encontrar a linha com "alfabeto:"
+        // Exibir cada linha para depuração
+        cout << "Linha lida: " << linha << endl;
+        if (linha.find("transicoes") != string::npos) {
+            hasTransicoes = true;
+        }
+        if (linha.find("expressao:") != string::npos) {
+            hasExpressao = true;
         }
     }
 
-    if (isAutomato) {
+    // Baseado no conteúdo do arquivo, detecta o tipo
+    if (hasTransicoes) {
         automato automato;
         automato.carregarAutomato(arquivo);
-        cout << "Autômato carregado com sucesso!" << endl;
+        cout << "Automato carregado com sucesso!" << endl;
         automato.exibir();
-    } else if (isExpressao) {
+    } else if (hasExpressao) {
         expressaoRegular er;
         er.carregarER(arquivo);
-        cout << "Expressão Regular carregada com sucesso!" << endl;
+        cout << "Expressao Regular carregada com sucesso!" << endl;
         er.exibir();
     } else {
-        cerr << "Formato de arquivo inválido." << endl;
+        cerr << "Formato de arquivo invalido." << endl;
     }
 
-    file.close(); // Fechar o arquivo
+    file.close();
     return 0;
 }

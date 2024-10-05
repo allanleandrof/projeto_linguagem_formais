@@ -28,5 +28,5 @@ void expressaoRegular::exibir() const {
     for (const auto& simbolo : alfabeto) {
         cout << simbolo << " ";
     }
-    cout << "\nExpressão: " << expressao << endl;
+    cout << "\nExpressao: " << expressao << endl;
 }
