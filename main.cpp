@@ -36,15 +36,17 @@ int main() {
 
     // Baseado no conteúdo do arquivo, detecta o tipo
     if (hasTransicoes) {
-        automato automato;
-        automato.carregarAutomato(arquivo);
+        automato automato1;
+        automato1.carregarAutomato(arquivo);
         cout << "Automato carregado com sucesso!" << endl;
-        automato.exibir();
+        automato1.exibir();
 
-        if (automato.ehAFD()) {
+        if (automato1.ehAFD()) {
         cout << "O automato eh um AFD." << endl;
         } else {
             cout << "O automato eh um AFN." << endl;
+            automato converte = automato1.transformarAFNparaAFD();
+            converte.exibir();
         }
 
     } else if (hasExpressao) {
