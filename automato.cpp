@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 automato::automato() {}
 
@@ -60,8 +61,39 @@ void automato::exibir() const {
     for (const auto& estado_final : estados_finais) {
         cout << estado_final << " ";
     }
-    cout << "\nTransições: \n";
+    cout << "\nTransicoes: \n";
     for (const auto& transicao : transicoes) {
         cout << get<0>(transicao) << " -> " << get<1>(transicao) << " [ " << get<2>(transicao) << " ]" << endl;
     }
+}
+
+bool automato::ehAFD() const {
+    // Mapa para armazenar as transições já vistas de um estado com um determinado símbolo
+    map<pair<string, string>, string> transicoes_vistas;
+
+    // Itera sobre todas as transições do autômato
+    for (int i = 0; i < transicoes.size(); i++) {
+        string estado_atual = get<0>(transicoes[i]);
+        string estado_destino = get<1>(transicoes[i]);
+        string simbolo = get<2>(transicoes[i]);
+
+        // Se a transição for um símbolo vazio (epsilon), o autômato é AFN
+        if (simbolo == "") {
+            return false;
+        }
+
+        // Verifica se já existe uma transição para o mesmo estado e símbolo
+        pair<string, string> chave = make_pair(estado_atual, simbolo);
+        if (transicoes_vistas.find(chave) != transicoes_vistas.end()) {
+            // Já existe uma transição com o mesmo símbolo para o mesmo estado
+            return false;
+        }
+
+        // Armazena a transição como vista
+        transicoes_vistas[chave] = estado_destino;
+    }
+
+
+    // Se todas as transições forem únicas para cada estado e símbolo, é um AFD
+    return true;
 }

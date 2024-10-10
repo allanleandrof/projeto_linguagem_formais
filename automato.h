@@ -19,6 +19,7 @@ public:
     automato();  // Construtor
     void carregarAutomato(const string& arquivo);  // Função para carregar um autômato
     void exibir() const;  // Função para exibir o autômato
+    bool ehAFD() const;
 };
 
 #endif

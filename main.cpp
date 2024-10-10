@@ -40,6 +40,13 @@ int main() {
         automato.carregarAutomato(arquivo);
         cout << "Automato carregado com sucesso!" << endl;
         automato.exibir();
+
+        if (automato.ehAFD()) {
+        cout << "O automato eh um AFD." << endl;
+        } else {
+            cout << "O automato eh um AFN." << endl;
+        }
+
     } else if (hasExpressao) {
         expressaoRegular er;
         er.carregarER(arquivo);
