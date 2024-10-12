@@ -17,6 +17,22 @@ private:
 
 public:
     automato();  // Construtor
+
+    // Getters
+    vector<string> getAlfabeto() const;
+    vector<string> getEstados() const;
+    string getEstadoInicial() const;
+    vector<string> getEstadosFinais() const;
+    vector<tuple<string, string, string>> getTransicoes() const;
+
+    // Setters
+    void setAlfabeto(const vector<string>& novoAlfabeto);
+    void setEstados(const vector<string>& novosEstados);
+    void setEstadoInicial(const string& novoEstadoInicial);
+    void setEstadosFinais(const vector<string>& novosEstadosFinais);
+    void setTransicoes(const vector<tuple<string, string, string>>& novasTransicoes);
+
+
     void carregarAutomato(const string& arquivo);  // Função para carregar um autômato
     void exibir() const;  // Função para exibir o autômato
     bool ehAFD() const;

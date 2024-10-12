@@ -43,6 +43,9 @@ int main() {
 
         if (automato1.ehAFD()) {
         cout << "O automato eh um AFD." << endl;
+        expressaoRegular er;
+        er.converterAFDparaER(automato1);
+        er.exibir();
         } else {
             cout << "O automato eh um AFN." << endl;
             automato converte = automato1.transformarAFNparaAFD();
