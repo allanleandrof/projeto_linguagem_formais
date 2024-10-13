@@ -211,7 +211,7 @@ automato expressaoRegular::converterERparaAFN() {
 
     string expressaoAtual = expressao;
 
-    for (size_t i = 0; i < expressaoAtual.length(); i++) {
+    for (int i = 0; i < expressaoAtual.length(); i++) {
         char c = expressaoAtual[i];
 
         if (c == '|') {
