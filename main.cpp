@@ -57,6 +57,8 @@ int main() {
         er.carregarER(arquivo);
         cout << "Expressao Regular carregada com sucesso!" << endl;
         er.exibir();
+        automato a1 = er.converterERparaAFN();
+        a1.exibir();
     } else {
         cerr << "Formato de arquivo invalido." << endl;
     }

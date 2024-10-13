@@ -51,6 +51,41 @@ void automato::setTransicoes(const vector<tuple<string, string, string>>& novasT
     transicoes = novasTransicoes;
 }
 
+// Função para adicionar um novo estado ao autômato
+void automato::adicionarEstado(const string& estado) {
+    estados.push_back(estado);
+}
+
+// Função para adicionar um estado final ao autômato
+void automato::adicionarEstadoFinal(const string& estado) {
+    estados_finais.push_back(estado);
+}
+
+// Função para adicionar uma transição ao autômato
+void automato::adicionarTransicao(const string& origem, const string& destino, const string& simbolo) {
+    transicoes.push_back(make_tuple(origem, destino, simbolo));
+}
+
+// Função para mesclar outro autômato ao atual
+void automato::mesclarAutomato(const automato& outro) {
+    // Adiciona estados
+    for (const string& estado : outro.getEstados()) {
+        adicionarEstado(estado);
+    }
+
+    // Adiciona transições
+    for (const auto& transicao : outro.getTransicoes()) {
+        string origem, destino, simbolo;
+        tie(origem, destino, simbolo) = transicao;
+        adicionarTransicao(origem, destino, simbolo);
+    }
+
+    // Adiciona estados finais
+    for (const string& estadoFinal : outro.getEstadosFinais()) {
+        adicionarEstadoFinal(estadoFinal);
+    }
+}
+
 // Função para carregar o autômato de um arquivo
 void automato::carregarAutomato(const string& arquivo) {
     ifstream file(arquivo);

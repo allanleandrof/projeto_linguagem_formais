@@ -187,3 +187,59 @@ void expressaoRegular::converterAFDparaER(const automato& afd) {
     // Corrige a expressão regular final para uma forma mais simples
     simplificaExpressao();  // Função adicional para simplificar a expressão
 }
+
+// Função auxiliar para criar um novo estado
+string expressaoRegular::novoEstado() {
+    return "q" + to_string(estadoId++);
+}
+
+// Função para converter ER para AFN
+automato expressaoRegular::converterERparaAFN() {
+    automato afn;
+    string estado_inicial = "q0";
+    string estado_final = "qf";
+
+    afn.adicionarEstado(estado_inicial);
+    afn.setEstadoInicial(estado_inicial);
+    afn.adicionarEstadoFinal(estado_final);
+
+    // Criação de uma pilha para gerenciar estados
+    vector<string> estadoStack;
+    estadoStack.push_back(estado_inicial);
+
+    afn.setAlfabeto(alfabeto);
+
+    string expressaoAtual = expressao;
+
+    for (size_t i = 0; i < expressaoAtual.length(); i++) {
+        char c = expressaoAtual[i];
+
+        if (c == '|') {
+            // Alternância: empilha o estado atual
+            string estadoIntermediario = "q" + to_string(estadoStack.size());
+            afn.adicionarEstado(estadoIntermediario);
+            // Conectar o último estado ao estado intermediário com transição vazia
+            afn.adicionarTransicao(estadoStack.back(), estadoIntermediario, ""); // Transição vazia para alternar
+            estadoStack.push_back(estadoIntermediario);
+        } else if (c == '*') {
+            // Repetição: pega o último estado e conecta a ele mesmo
+            string estadoAnterior = estadoStack.back();
+            afn.adicionarTransicao(estadoAnterior, estadoAnterior, ""); // Loop para o mesmo estado
+
+            // Adiciona transição do estado anterior ao estado final
+            afn.adicionarTransicao(estadoAnterior, estado_final, ""); // Permitir que o AFN termine após zero ocorrências
+        } else {
+            // Transição normal (a, b, c, etc.)
+            string novoEstado = "q" + to_string(estadoStack.size());
+            afn.adicionarEstado(novoEstado);
+            afn.adicionarTransicao(estadoStack.back(), novoEstado, string(1, c)); // Transição com símbolo
+            estadoStack.push_back(novoEstado);
+        }
+    }
+
+    // Conectando o último estado gerado ao estado final
+    string ultimoEstado = estadoStack.back();
+    afn.adicionarTransicao(ultimoEstado, estado_final, ""); // Conectar o último estado ao estado final
+
+    return afn;
+}
