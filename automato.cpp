@@ -184,11 +184,10 @@ bool automato::ehAFD() const {
 // Função auxiliar para mover os estados
 set<string> mover(const set<string>& conjunto_estados, const string& simbolo, const vector<tuple<string, string, string>>& transicoes) {
     set<string> novos_estados;
-    for (int i = 0; i < conjunto_estados.size(); i++) {
-        string estado = *next(conjunto_estados.begin(), i);
-        for (int j = 0; j < transicoes.size(); j++) {
-            if (get<0>(transicoes[j]) == estado && get<2>(transicoes[j]) == simbolo) {
-                novos_estados.insert(get<1>(transicoes[j]));
+    for (const auto& estado : conjunto_estados) {
+        for (const auto& transicao : transicoes) {
+            if (get<0>(transicao) == estado && get<2>(transicao) == simbolo) {
+                novos_estados.insert(get<1>(transicao));
             }
         }
     }
@@ -209,10 +208,15 @@ automato automato::transformarAFNparaAFD() const {
     novos_estados_map[estado_inicial_afd] = getEstadoInicial();
     afd.setEstadoInicial(getEstadoInicial());
 
+    // Estado de erro (opcional)
+    string estado_erro = "q_err";
+    afd.adicionarEstado(estado_erro);
+
     while (!fila_estados.empty()) {
         set<string> estados_atual = fila_estados.front();
         fila_estados.pop();
 
+        // Verificar estados finais
         for (const auto& estado_final : getEstadosFinais()) {
             if (estados_atual.find(estado_final) != estados_atual.end()) {
                 novos_estados_finais.push_back(novos_estados_map[estados_atual]);
@@ -220,21 +224,28 @@ automato automato::transformarAFNparaAFD() const {
             }
         }
 
+        // Para cada símbolo do alfabeto
         for (const auto& simbolo : getAlfabeto()) {
             set<string> novos_estados = mover(estados_atual, simbolo, getTransicoes());
 
             if (!novos_estados.empty()) {
+                // Se não existe, cria um novo estado
                 if (novos_estados_map.find(novos_estados) == novos_estados_map.end()) {
                     string novo_estado_nome = "q" + to_string(novos_estados_map.size());
                     novos_estados_map[novos_estados] = novo_estado_nome;
                     fila_estados.push(novos_estados);
                 }
 
+                // Adiciona a nova transição
                 novas_transicoes.emplace_back(novos_estados_map[estados_atual], novos_estados_map[novos_estados], simbolo);
+            } else {
+                // Se não houver novos estados, adiciona transição para o estado de erro
+                novas_transicoes.emplace_back(novos_estados_map[estados_atual], estado_erro, simbolo);
             }
         }
     }
 
+    // Adiciona novos estados e transições ao AFD
     vector<string> novosEstados;
     for (const auto& par : novos_estados_map) {
         novosEstados.push_back(par.second);
@@ -246,3 +257,4 @@ automato automato::transformarAFNparaAFD() const {
 
     return afd;
 }
+
