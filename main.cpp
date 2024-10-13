@@ -60,6 +60,7 @@ int main() {
     int sair;
     while (true) {
         automato converte;
+        automato converte2;
         expressaoRegular er2;
 
         if (num == 0 || sair == 1) {
@@ -112,8 +113,8 @@ int main() {
                 sair = 1;
                 break;
             case 6:
-                converte = er.converterERparaAFN();
-                converte = automato1.transformarAFNparaAFD();
+                converte2 = er.converterERparaAFN();
+                converte = converte2.transformarAFNparaAFD();
                 converte.exibir();
                 cout << "ER --> AFD" << endl;
                 sair = 1;
