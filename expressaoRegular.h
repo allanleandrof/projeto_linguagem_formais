@@ -22,18 +22,6 @@ private:
     // Função auxiliar para criar um novo estado
     string novoEstado();
 
-    // Função auxiliar para criar um AFN básico para um símbolo
-    automato afnBasico(char simbolo);
-
-    // Implementação da união (A | B)
-    automato unir(const automato& afn1, const automato& afn2);
-
-    // Implementação da concatenação (AB)
-    automato concatenar(const automato& afn1, const automato& afn2);
-
-    // Implementação do fechamento de Kleene (A*)
-    automato fecharKleene(const automato& afn);
-
 public:
     expressaoRegular();  // Construtor
     

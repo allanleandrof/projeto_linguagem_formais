@@ -56,10 +56,10 @@ void expressaoRegular::simplificaExpressao() {
         return;
     }
 
-    // 1. Remove espaços desnecessários
+    // Remove espaços desnecessários
     expressao.erase(remove(expressao.begin(), expressao.end(), ' '), expressao.end());
 
-    // 2. Remove duplicatas em união
+    // Remove duplicados em união
     set<string> termos;
     istringstream iss(expressao);
     string termo;
@@ -77,26 +77,24 @@ void expressaoRegular::simplificaExpressao() {
     }
     expressao = nova_expressao;
 
-    // 3. Combina sequências repetidas com Kleene
-    // Exemplo: "a+a" -> "a*"
+    // Combina sequências repetidas com Kleene
     regex kleene_regex("([a-zA-Z])\\1+");
     expressao = regex_replace(expressao, kleene_regex, "$1*");
 
-    // 4. Simplificação de expressões como "a|b" ou "a+b"
+    // Simplificação de expressões como "a|b" ou "a+b"
     replace(expressao.begin(), expressao.end(), '+', '|');
 
-    // 5. Remover expressões redundantes
-    // Exemplo: "a|a" para "a"
+    // Remover expressões redundantes
     regex redundancia_regex("([a-zA-Z])\\|\\1");
     expressao = regex_replace(expressao, redundancia_regex, "$1");
 
-    // 6. Remover parênteses desnecessários
+    // Remover parênteses desnecessários
     regex parentese_regex("\\(([^()]*)\\)");
     while (regex_search(expressao, parentese_regex)) {
         expressao = regex_replace(expressao, parentese_regex, "$1");
     }
 
-    // 7. Remover sequências como "a*|a*" para "a*"
+    // Remover sequências como "a*|a*" para "a*"
     regex redundancia_kleene_regex("([a-zA-Z]+\\*)\\|\\1");
     expressao = regex_replace(expressao, redundancia_kleene_regex, "$1");
 }
@@ -145,7 +143,7 @@ void expressaoRegular::converterAFDparaER(const automato& afd) {
                     if (!r_pp.empty() && !r_qq.empty()) {
                         string novo_valor = r_pp;
                         if (!r_ee.empty()) {
-                            novo_valor += "(" + r_ee + ")*";  // Inclui fechamento de Kleene para ciclos
+                            novo_valor += "(" + r_ee + ")*";  // Inclui feche de Kleene para ciclos
                         }
                         novo_valor += r_qq;
 
@@ -177,7 +175,7 @@ void expressaoRegular::converterAFDparaER(const automato& afd) {
         // Se há um ciclo que retorna ao estado inicial, deve ser considerado
         string ciclo_inicial = tabela[make_pair(final, estado_inicial)];
         if (!ciclo_inicial.empty()) {
-            er_final += "(" + ciclo_inicial + ")*";  // Fechamento de Kleene para ciclos
+            er_final += "(" + ciclo_inicial + ")*";  // Feche de Kleene para ciclos
         }
     }
 

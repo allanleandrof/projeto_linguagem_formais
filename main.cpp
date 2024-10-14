@@ -58,6 +58,8 @@ int main() {
 
     int num = 10;
     int sair;
+
+    //menu de opções de conversão
     while (true) {
         automato converte;
         automato converte2;

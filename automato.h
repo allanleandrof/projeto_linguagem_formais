@@ -40,8 +40,8 @@ public:
 
     void carregarAutomato(const string& arquivo);  // Função para carregar um autômato
     void exibir() const;  // Função para exibir o autômato
-    bool ehAFD() const;
-    automato transformarAFNparaAFD() const;
+    bool ehAFD() const; // Função para verificar se é afd
+    automato transformarAFNparaAFD() const; //Função para converter AFN em afd
 };
 
 #endif
